@@ -1,6 +1,6 @@
 .page-header
   %h1 Welcome to WebDJ!
 %p Type a room name to get started
-= form_tag('#', :method => "GET", :class => 'form-inline', :id => "select-room") do
+= form_tag(rooms_path, :method => "GET", :class => 'form-inline', :id => "select-room") do
   = text_field_tag("room_name", "Barbaric Beatz", :class => "span10")
   = submit_tag("Let's Party!", :class => "span2 btn pull-right")
