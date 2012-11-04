@@ -11,7 +11,12 @@ class Room < ActiveRecord::Base
   def enqueue_song(provider, identifier, duration)
     last_song = JSON.parse($redis.lindex(queue_key, -1) || "{}")
     previous_time = last_song['play_at'] || Time.now.to_i
+
     new_time = (last_song['duration'] || 0).to_i + previous_time.to_i
+
+    # If the last song has ended then we want to queue up the song
+    # now, not in the past.
+    new_time = [new_time, Time.now.to_i].max
 
     $redis.rpush(queue_key, {
       :provider => provider,
