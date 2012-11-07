@@ -3,6 +3,11 @@
 .row
   .span4.room-queue
     %h3 Coming up...
+    %p{'data-bind' => 'text: songQueue().length'}
+    %ul{'data-bind' => 'foreach: songQueue'}
+      %li
+        %p{'data-bind' => 'text: title'}
+        %p{'data-bind' => 'text: artist'}
   .span8
     .now-playing
       %h3 Now Playing...

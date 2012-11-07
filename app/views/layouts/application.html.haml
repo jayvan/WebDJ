@@ -3,9 +3,12 @@
   %head
     %title WebDJ
     = stylesheet_link_tag "application", :media => "all"
-    = javascript_include_tag "application"
+    = javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.2/jquery.min.js"
+    = javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/knockout/2.2.0/knockout-min.js"
+    = javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.1/require.min.js", 'data-main' => '/assets/main'
     = csrf_meta_tags
   %body
+    #playback
     - if notice
       %p.alert.alert-info= notice
     - if alert
