@@ -21,7 +21,7 @@ class RoomsController < ApplicationController
 
   def enqueue
     room = Room.find(params['id'])
-    room.enqueue_song(params['provider'], params['media_id'], params['duration'])
+    room.enqueue_song(params['provider'], params['media_id'], params['duration'].to_i)
 
     render :nothing => true
   end
