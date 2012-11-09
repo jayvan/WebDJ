@@ -6,20 +6,22 @@ define([
   Utils
 ){
   var Room = function(id) {
-    this.id = id;
-    this.songQueue = ko.observableArray();
-    this.fetchData();
+    var self = this;
+    self.id = id;
+    self.songQueue = ko.observableArray();
+    self.currentSong = ko.observable();
+    self.fetchData();
   };
 
-  Room.prototype.fetchData = function() {
+  Room.prototype.fetchData = function(callback) {
     var self = this;
     $.getJSON("/rooms/" + self.id + "/queue.json", function(data) {
       data.forEach(function(song) {
-        console.log(song);
-        if (song.play_at >= Utils.time()) {
+        if (song.play_at >= Utils.time() - song.duration) {
           self.songQueue.push(new Song(song.provider, song.identifier, song.play_at));
         }
       });
+      callback();
     });
   };
 

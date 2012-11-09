@@ -8,9 +8,10 @@ define([
     self.provider = Providers[provider];
     self.id = id;
     self.playAt = playAt;
-    this.title = ko.observable();
-    this.artist = ko.observable();
-    this.duration = ko.observable();
+    self.title = ko.observable();
+    self.artist = ko.observable();
+    self.duration = ko.observable();
+    self.loaded = ko.observable();
     self.getInfo();
   };
 
@@ -19,8 +20,12 @@ define([
   // so we need to set values in a callback
   Song.prototype.getInfo = function() {
     var self = this;
-    $.extend(self,
-      self.provider.getInfo(self));
+    self.provider.getInfo(self);
+  };
+
+  Song.prototype.load = function() {
+    var self = this;
+    self.provider.load(self);
   };
 
   return Song;

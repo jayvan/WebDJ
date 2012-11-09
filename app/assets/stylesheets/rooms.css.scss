@@ -3,7 +3,8 @@
 }
 
 #playback {
-  display: none;
+  visibility: hidden;
+  position: absolute;
 }
 
 .room-queue {
