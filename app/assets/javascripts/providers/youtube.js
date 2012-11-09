@@ -27,7 +27,6 @@ define([
 
       var timeUntilStart = Math.max(song.playAt - Utils.time(), 0) * 1000;
       var timeUntilEnd = (song.playAt + song.duration() - Utils.time()) * 1000;
-
       // Inject the html
       window.setTimeout(function() {
         $('#playback').append($playerHTML);

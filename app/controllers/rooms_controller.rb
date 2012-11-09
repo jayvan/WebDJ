@@ -11,7 +11,8 @@ class RoomsController < ApplicationController
 
   def queue
     room = Room.find(params['id'])
-    songs = room.queued_songs
+    since = (params['last_update'] || 0).to_i
+    songs = room.queued_songs.select{|song| song['created_at'] > since}
 
     respond_to do |format|
       format.xml { render :xml => songs.to_xml }

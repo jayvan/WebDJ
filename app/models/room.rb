@@ -22,7 +22,8 @@ class Room < ActiveRecord::Base
       :provider => provider,
       :identifier =>  identifier,
       :play_at => new_time,
-      :duration => duration
+      :duration => duration,
+      :created_at => Time.now().to_i
     }.to_json)
   end
 end

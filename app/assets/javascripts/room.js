@@ -7,6 +7,8 @@ define([
   Utils,
   STATUS
 ){
+  var FETCH_INTERVAL = 10000;
+
   var Room = function(id) {
     var self = this;
     self.id = id;
@@ -24,19 +26,24 @@ define([
         }
       }
     });
+    self.lastUpdate = 0;
     self.fetchData();
   };
 
   Room.prototype.fetchData = function() {
     var self = this;
-    $.getJSON("/rooms/" + self.id + "/queue.json", function(data) {
+    $.getJSON("/rooms/" + self.id + "/queue.json?last_update=" + self.lastUpdate, function(data) {
       data.forEach (function(song) {
-        console.log(song.play_at - Utils.time() - song.duration);
         if (song.play_at >= Utils.time() - song.duration) {
           self.songs.push(ko.observable(new Song(song.provider, song.identifier, song.play_at)));
         }
       });
+
+      window.setTimeout(function() {
+        self.fetchData();
+      }, FETCH_INTERVAL);
     });
+    self.lastUpdate = Utils.time();
   };
 
   return Room;
