@@ -15,7 +15,7 @@ define([
     var self = this;
     $.getJSON("/rooms/" + self.id + "/queue.json", function(data) {
       data.forEach(function(song) {
-        if (song.play_at >= Utils.time()) {
+        if (song.play_at >= Utils.time() - 180) {
           self.songQueue.push(new Song(song.provider, song.identifier, song.play_at));
         }
       });
