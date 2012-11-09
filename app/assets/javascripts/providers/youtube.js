@@ -21,7 +21,7 @@ define([
       var loadPosition = Math.max(Utils.time() - song.playAt, 0);
       var embedUrl = "https://www.youtube-nocookie.com/v/" + song.id + "?version=2&autoplay=1&enablejsapi=1&start=" + loadPosition;
       var playerHTML = '<object allowScriptAccess="always" type="application/x-shockwave-flash" width="1" height="1" allowScriptAccess="always" data="' + embedUrl + '" style="visibility:hidden;display:inline;"><param name="movie" value="' + embedUrl + '" /><param name="wmode" value="transparent" /></object>';
-      $playerHTML = $(playerHTML);
+      var $playerHTML = $(playerHTML);
 
       song.status(STATUS.LOADED);
 
