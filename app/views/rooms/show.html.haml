@@ -4,16 +4,16 @@
 .row
   .span4.room-queue
     %h3 Coming up...
-    %p{'data-bind' => 'text: songQueue().length'}
-    %ul{'data-bind' => 'foreach: songQueue'}
+    %ul{'data-bind' => 'foreach: upcomingSongs'}
       %li
         %p{'data-bind' => 'text: title'}
         %p{'data-bind' => 'text: artist'}
   .span8
-    .now-playing
+    .now-playing{'data-bind' => 'with: currentSong'}
       %h3 Now Playing...
-      %p <Song 1>
-      %p <Song 2>
+      %p
+        .title{'data-bind' => 'text: title'}
+        .artist{'data-bind' => 'text: artist'}
     .user-controls
       %h3 Add Songs
 = javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.1/require.min.js", 'data-main' => '/assets/main'

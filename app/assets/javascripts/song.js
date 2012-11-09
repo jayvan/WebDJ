@@ -1,7 +1,9 @@
 define([
-  "providers"
+  "providers",
+  "song-status"
 ], function(
-  Providers
+  Providers,
+  STATUS
 ){
   var Song = function(provider, id, playAt) {
     var self = this;
@@ -11,7 +13,7 @@ define([
     self.title = ko.observable();
     self.artist = ko.observable();
     self.duration = ko.observable();
-    self.loaded = ko.observable();
+    self.status = ko.observable(STATUS.NO_DATA);
     self.getInfo();
   };
 
