@@ -5,9 +5,8 @@ With Web DJ you and your friends can all create a shared playlist and listen to 
 
 Roadmap
 =======
-
-- Have the server only take in the provider and media_id, it should pull the info like duration, etc.
 - Add Soundcloud
+- Embedded search on the page
 - Facebook/Google account integration
 - Better UI
 - Background worker to pull media info

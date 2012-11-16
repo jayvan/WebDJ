@@ -1,7 +1,6 @@
 define({
-  NO_DATA: 0,
-  HAVE_DATA: 1,
-  LOADED: 2,
-  PLAYING: 3,
-  FINISHED: 4
+  NOT_LOADED: 0,
+  LOADED: 1,
+  PLAYING: 2,
+  FINISHED: 3
 });

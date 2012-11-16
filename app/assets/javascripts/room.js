@@ -34,10 +34,10 @@ define([
 
   Room.prototype.fetchData = function() {
     var self = this;
-    $.getJSON(self.baseURL + "queue.json?last_update=" + self.lastUpdate, function(data) {
+    $.getJSON(self.baseURL + "queue.json?lastUpdate=" + self.lastUpdate, function(data) {
       data.forEach (function(song) {
-        if (song.play_at + song.duration > Utils.time()) {
-          self.songs.push(ko.observable(new Song(song.provider, song.identifier, song.play_at)));
+        if (song.playAt + song.duration > Utils.time()) {
+          self.songs.push(ko.observable(new Song(song)));
         }
       });
 

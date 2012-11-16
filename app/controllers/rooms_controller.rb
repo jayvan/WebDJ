@@ -11,8 +11,8 @@ class RoomsController < ApplicationController
 
   def queue
     room = Room.find(params['id'])
-    since = (params['last_update'] || 0).to_i
-    songs = room.queued_songs.select{|song| song['created_at'] > since}
+    since = (params['lastUpdate'] || 0).to_i
+    songs = room.queued_songs.select{|song| song['createdAt'] > since}
 
     respond_to do |format|
       format.xml { render :xml => songs.to_xml }
@@ -22,7 +22,7 @@ class RoomsController < ApplicationController
 
   def enqueue
     room = Room.find(params['id'])
-    room.enqueue_song(params['provider'], params['media_id'], params['duration'].to_i)
+    room.enqueue_song(params['provider'], params['mediaId'])
 
     render :nothing => true
   end
