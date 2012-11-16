@@ -3,17 +3,30 @@
   %h1= @room.name
 .row
   .span4.room-queue
-    %h3 Coming up...
+    %h3 Coming up
     %ul{'data-bind' => 'foreach: upcomingSongs'}
       %li
         %p{'data-bind' => 'text: title'}
         %p{'data-bind' => 'text: artist'}
+    %p{'data-bind' => 'visible: upcomingSongs().length === 0'}
+      There are no more songs in the queue! Quick, add a song to keep the party going.
   .span8
     .now-playing{'data-bind' => 'with: currentSong'}
-      %h3 Now Playing...
+      %h3 Now Playing
       %p
         .title{'data-bind' => 'text: title'}
         .artist{'data-bind' => 'text: artist'}
     .user-controls
-      %h3 Add Songs
+      %form{'data-bind' => 'submit: enqueueSong'}
+        %fieldset
+          %legend Add Song
+          %label{:for => 'provider'} Provider
+          %select{:name => 'provider'}
+            %option{:value => 'youtube'} Youtube
+          %label{:for => 'media_id'} ID
+          %input{:type => 'text', :name => 'media_id'}
+          %label{:for => 'duration'} Duration
+          %input{:type => 'text', :name => 'duration'}
+          %br
+          %input.btn{:type => 'submit'}
 = javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.1/require.min.js", 'data-main' => '/assets/main'
