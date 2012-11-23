@@ -8,7 +8,6 @@ define([
   STATUS
 ){
   var FETCH_INTERVAL = 10000;
-  var SHORT_FETCH_INTERVAL = 100;
 
   var Room = function(id) {
     var self = this;
@@ -34,7 +33,6 @@ define([
 
   Room.prototype.fetchData = (function() {
     var pulling = false;
-    var triedPull = false;
 
     return function() {
       var self = this;
@@ -44,28 +42,32 @@ define([
 
       // If we already have a request out: don't send another, if we don't: we do now.
       if (pulling) {
-        triedPull = true;
         return;
       } else {
         pulling = true;
       }
 
-      $.getJSON(self.baseURL + "queue.json?lastUpdate=" + self.lastUpdate, function(data) {
-        data.forEach (function(song) {
-          if (song.playAt + song.duration > Utils.time()) {
-            var newSong = new Song(song);
-            self.songs.push(ko.observable(newSong));
-            newSong.load();
-          }
-        });
+      $.ajax({
+        url: self.baseURL + "queue.json?lastUpdate=" + self.lastUpdate,
+        dataType: 'json',
+        success: function(data) {
+          data.forEach (function(song) {
+            if (song.playAt + song.duration > Utils.time()) {
+              var newSong = new Song(song);
+              self.songs.push(ko.observable(newSong));
+              newSong.load();
+            }
+          });
+        },
+        complete: function() {
+          self.fetchTimeout = window.setTimeout(function() {
+            self.fetchData();
+          }, FETCH_INTERVAL);
 
-        self.fetchTimeout = window.setTimeout(function() {
-          self.fetchData();
-        }, triedPull ? SHORT_FETCH_INTERVAL : FETCH_INTERVAL);
-
-        pulling = false;
-        triedPull = false;
+          pulling = false;
+        }
       });
+
       self.lastUpdate = Utils.time();
     };
   })();
