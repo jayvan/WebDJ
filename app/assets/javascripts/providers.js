@@ -1,9 +1,12 @@
 define([
-  "providers/youtube"
+  "providers/youtube",
+  "providers/soundcloud"
 ], function(
-  Youtube
+  Youtube,
+  Soundcloud
 ){
   return {
-    'youtube': Youtube
+    'youtube': Youtube,
+    'soundcloud': Soundcloud
   };
 });
