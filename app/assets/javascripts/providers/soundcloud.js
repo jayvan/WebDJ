@@ -30,7 +30,7 @@ define([
 
       // Clean up the html
       window.setTimeout(function() {
-        player.stop();
+        player.pause();
         song.status(STATUS.FINISHED);
       }, timeUntilEnd);
     }
