@@ -14,7 +14,7 @@ define([
 
     self.provider = Providers[json.provider];
     self.status = ko.observable(STATUS.NOT_LOADED);
-    self.load();
+    return self;
   };
 
   Song.prototype.load = function() {
