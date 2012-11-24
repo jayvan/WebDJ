@@ -1,3 +1,9 @@
+if (RAILS_ENV === 'development') {
+  require.config({
+    urlArgs: Date.now()
+  });
+}
+
 require([
   "room"
 ], function(
