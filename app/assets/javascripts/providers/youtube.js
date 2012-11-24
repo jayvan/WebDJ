@@ -27,6 +27,21 @@ define([
         $playerHTML.remove();
         song.status(STATUS.FINISHED);
       }, timeUntilEnd);
+    },
+
+    search: function(query, callback) {
+      var url = "https://gdata.youtube.com/feeds/api/videos?v=2&alt=json-in-script&max-results=5&callback=?&q=" + encodeURIComponent(query);
+      $.getJSON(url, function(data) {
+        callback(data.feed.entry.map(function(item) {
+          return {
+            artist: item.author[0].name.$t,
+            title: item.title.$t,
+            provider: 'youtube',
+            thumbnail: item.media$group.media$thumbnail[0].url,
+            mediaId: item.media$group.yt$videoid.$t
+          };
+        }));
+      });
     }
   };
 });
