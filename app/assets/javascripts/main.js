@@ -1,4 +1,5 @@
 if (RAILS_ENV === 'development') {
+  // Append a timestamp to the file names of required js files to prevent caching in dev
   require.config({
     urlArgs: Date.now()
   });
