@@ -1,9 +1,11 @@
 define([
   "utils",
-  'song-status'
+  'song-status',
+  'settings'
 ], function(
   Utils,
-  STATUS
+  STATUS,
+  SETTINGS
 ){
   return {
     load: function(song) {
@@ -16,7 +18,8 @@ define([
       var timeUntilEnd = (song.playAt + song.duration - Utils.time()) * 1000;
       // Inject the html
       window.setTimeout(function() {
-        player = new Audio(song.streamUrl);
+        var stream_url = "http://api.soundcloud.com/tracks/" + song.mediaId + "/stream?client_id=" + SETTINGS.SOUNDCLOUD_KEY;
+        player = new Audio(stream_url);
 
         // You can't set the playing position until the metadata has loaded
         player.addEventListener('canplay', function(e) {

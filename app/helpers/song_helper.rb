@@ -28,14 +28,11 @@ module SongHelper
   def get_soundcloud_song_info(media_id)
     url = "http://api.soundcloud.com/tracks/#{media_id}.json?client_id=#{ENV['SOUNDCLOUD_KEY']}"
     json = JSON.parse(open(url).read)
-    get_stream_url = json['stream_url'] + "?client_id=#{ENV['SOUNDCLOUD_KEY']}&allow_redirects=False"
-    stream_url = Net::HTTP.get_response(URI(get_stream_url)).response['location']
     return {
       :title => json['title'],
       :artist => json['user']['username'],
       :duration => (json['duration'] / 1000.0).ceil,
       :thumbnail => json['artwork_url'],
-      :streamUrl => stream_url
     }
   end
 end
