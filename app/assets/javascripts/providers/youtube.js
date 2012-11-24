@@ -30,7 +30,7 @@ define([
     },
 
     search: function(query, callback) {
-      var url = "https://gdata.youtube.com/feeds/api/videos?v=2&alt=json-in-script&max-results=5&callback=?&q=" + encodeURIComponent(query);
+      var url = "https://gdata.youtube.com/feeds/api/videos?v=2&alt=json-in-script&callback=?&q=" + encodeURIComponent(query);
       $.getJSON(url, function(data) {
         callback(data.feed.entry.map(function(item) {
           return {
