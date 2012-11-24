@@ -11,6 +11,9 @@ WebDJ::Application.routes.draw do
       get 'index'
     end
   end
+
+  match 'api/:action' => 'api#:action'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

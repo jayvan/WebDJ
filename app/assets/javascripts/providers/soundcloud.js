@@ -33,6 +33,21 @@ define([
         player.pause();
         song.status(STATUS.FINISHED);
       }, timeUntilEnd);
+    },
+
+    search: function(query, callback) {
+      var url = "/api/soundcloud_search?query=" + encodeURIComponent(query);
+      $.getJSON(url, function(data) {
+        callback(data.map(function(item) {
+          return {
+            artist: item.user.username,
+            title: item.title,
+            provider: 'soundcloud',
+            thumbnail: item.artwork_url,
+            mediaId: item.id
+          };
+        }));
+      });
     }
   };
 });
