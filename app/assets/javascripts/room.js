@@ -55,7 +55,6 @@ define([
             if (song.playAt + song.duration > Utils.time()) {
               var newSong = new Song(song);
               self.pushSongToQueue(newSong);
-              newSong.load();
             }
           });
         },
@@ -81,6 +80,7 @@ define([
     }
 
     this.songs.push(ko.observable(song));
+    song.load();
   };
 
   Room.prototype.enqueueSong = function(form) {
