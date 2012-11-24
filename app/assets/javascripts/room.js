@@ -1,14 +1,14 @@
 define([
   "song",
   "utils",
-  'song-status'
+  'song-status',
+  'settings'
 ], function(
   Song,
   Utils,
-  STATUS
+  STATUS,
+  SETTINGS
 ){
-  var FETCH_INTERVAL = 10000;
-
   var Room = function(id) {
     var self = this;
     self.id = id;
@@ -61,7 +61,7 @@ define([
         complete: function() {
           self.fetchTimeout = window.setTimeout(function() {
             self.fetchData();
-          }, FETCH_INTERVAL);
+          }, SETTINGS.FETCH_INTERVAL);
 
           pulling = false;
         }
