@@ -2,12 +2,14 @@ define([
   "song",
   "utils",
   'song-status',
-  'settings'
+  'settings',
+  'providers'
 ], function(
   Song,
   Utils,
   STATUS,
-  SETTINGS
+  SETTINGS,
+  PROVIDERS
 ){
   var Room = function(id) {
     var self = this;
@@ -29,6 +31,21 @@ define([
     self.lastUpdate = 0;
     self.fetchTimeout = undefined;
     self.fetchData();
+    self.searchResults = ko.observableArray();
+
+    self.enqueueSong = function(song) {
+      $.ajax({
+          url: self.baseURL + "enqueue",
+          type: 'POST',
+          data: {
+            provider: song.provider,
+            mediaId: song.mediaId
+          },
+          success: function(data) {
+            self.fetchData();
+          }
+        });
+    };
   };
 
   Room.prototype.fetchData = (function() {
@@ -74,7 +91,7 @@ define([
   // Makes sure that the song is unique and adds it to the queue
   Room.prototype.pushSongToQueue = function(song) {
     for (var i = 0; i < this.songs().length; i++) {
-      if (song.startAt === this.songs()[i]().startAt) {
+      if (song.playAt === this.songs()[i]().playAt) {
         return;
       }
     }
@@ -83,23 +100,22 @@ define([
     song.load();
   };
 
-  Room.prototype.enqueueSong = function(form) {
+  Room.prototype.search = function(formElement) {
     var self = this;
-    var $form = $(form);
-    var $submitButton = $form.find('[type="submit"]');
+    var query = $(formElement).find('input[name="query"]').val();
 
-    $submitButton.attr('disabled', true);
-    $submitButton.val("Adding...");
+    self.searchResults.removeAll();
 
-    $.post(this.baseURL + "enqueue", $form.serialize(),
-      function(data) {
-        $submitButton.attr('disabled', false);
-        $submitButton.val("Add Song");
-        $form[0].reset();
-        self.fetchData();
+    var addResults = function(results) {
+      results.forEach(function(result) {
+        self.searchResults.push(result);
       });
+    };
+
+    for (var provider in PROVIDERS) {
+      PROVIDERS[provider].search(query, addResults);
+    }
   };
 
   return Room;
 });
-

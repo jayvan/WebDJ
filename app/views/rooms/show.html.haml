@@ -17,15 +17,15 @@
         .title{'data-bind' => 'text: title'}
         .artist{'data-bind' => 'text: artist'}
     .user-controls
-      %form{'data-bind' => 'submit: enqueueSong'}
+      %form{'data-bind' => 'submit: search'}
         %fieldset
-          %legend Add Song
-          %label{:for => 'provider'} Provider
-          %select{:name => 'provider'}
-            %option{:value => 'soundcloud'} Soundcloud
-            %option{:value => 'youtube'} Youtube
-          %label{:for => 'mediaId'} ID
-          %input{:type => 'text', :name => 'mediaId'}
+          %legend Find a Song
+          %input{:type => 'text', :name => 'query', :placeholder => "Search for songs or artists"}
           %br
-          %input.btn{:type => 'submit'}
+          %input.btn{:type => 'submit', :value => "Search"}
+      %ul{'data-bind' => 'foreach: searchResults'}
+        %li
+          %p{'data-bind' => 'text: title'}
+          %p{'data-bind' => 'text: artist'}
+          %a{'data-bind' => 'click: $root.enqueueSong'} Queue Song
 = javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.1/require.min.js", 'data-main' => '/assets/main'

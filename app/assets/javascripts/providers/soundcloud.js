@@ -24,11 +24,10 @@ define([
         // You can't set the playing position until the metadata has loaded
         player.addEventListener('canplay', function(e) {
           player.currentTime = startPosition;
+          song.status(STATUS.PLAYING);
         });
 
         player.play();
-
-        song.status(STATUS.PLAYING);
       }, timeUntilStart);
 
       // Clean up the html
