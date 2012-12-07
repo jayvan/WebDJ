@@ -1,4 +1,5 @@
 class RoomsController < ApplicationController
+  after_filter :log_activity, :only => :queue
 
   def index
     room = Room.find_or_create_by_name(params['room_name'])
@@ -10,9 +11,9 @@ class RoomsController < ApplicationController
   end
 
   def queue
-    room = Room.find(params['id'])
+    @room = Room.find(params['id'])
     since = (params['lastUpdate'] || 0).to_i
-    songs = room.queued_songs.select{|song| song['createdAt'] > since}
+    songs = @room.queued_songs.select{|song| song['createdAt'] > since}
 
     respond_to do |format|
       format.xml { render :xml => songs.to_xml }
@@ -25,5 +26,11 @@ class RoomsController < ApplicationController
     room.enqueue_song(params['provider'], params['mediaId'])
 
     render :nothing => true
+  end
+
+  private
+
+  def log_activity
+    @room.log_activity(request.session_options[:id])
   end
 end

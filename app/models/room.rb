@@ -5,6 +5,10 @@ class Room < ActiveRecord::Base
     return "room:#{id}:queue"
   end
 
+  def activity_key
+    return "room:#{id}:activity"
+  end
+
   def queued_songs
     $redis.lrange(queue_key, 0, -1).map{|song| JSON.parse(song)}
   end
@@ -27,6 +31,15 @@ class Room < ActiveRecord::Base
     }).to_json)
 
     trim_queue!
+  end
+
+  def active_users
+    $redis.zcount(activity_key, Time.now.to_i - 1.minute, '+inf')
+  end
+
+  # Marks a user as active in the room
+  def log_activity(user_id)
+    $redis.zadd(activity_key, Time.now.to_i, user_id)
   end
 
   # Removes any songs that have already ended from the rooms queue
