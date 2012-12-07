@@ -71,7 +71,7 @@ define([
         }
       });
 
-      self.lastUpdate = Utils.time();
+      self.lastUpdate = Utils.time() - 1;
     };
   })();
 
