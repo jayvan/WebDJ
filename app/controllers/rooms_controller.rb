@@ -2,12 +2,17 @@ class RoomsController < ApplicationController
   after_filter :log_activity, :only => :queue
 
   def index
+    @rooms = Room.all
+  end
+
+  def go
     room = Room.find_or_create_by_name(params['room_name'])
     redirect_to room
   end
 
   def show
     @room = Room.find(params['id'])
+    @title = @room.name
   end
 
   def queue

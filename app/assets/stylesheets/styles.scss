@@ -1,0 +1,136 @@
+* {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+  z-index: inherit;
+}
+
+body {
+  background-color: #2A2A2A;
+}
+
+.container-fluid {
+  min-width: 600px;
+}
+
+@font-face {
+  font-family: "Pincoya";
+  src: font-url("pincoyablack.eot"); /* IE */
+  src: local("Pincoya") font-url("pincoyablack.otf") format("opentype"); /* non-IE */
+}
+
+.header {
+  height: 112px;
+  margin-top: 20px;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+
+  .name {
+    text-align: center;
+    line-height: 106px;
+  }
+
+  .logo {
+    position: absolute;
+    top: 0;
+    background-color: #2A2A2A;
+    padding-right: 4px;
+  }
+}
+
+
+h1 {
+  font-family: "Pincoya";
+  color: white;
+  font-size: 120px;
+  background-color: #2A2A2A;
+  padding: 5px 2px 0 5px;
+  display: inline-block;
+  white-space: nowrap;
+  max-width: 615px;
+  font-weight: normal;
+  opacity: 0;
+
+  &::selection {
+    background: transparent;
+  }
+}
+
+.stripes {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: -1;
+
+  .stripe {
+    background-color: #787878;
+    height: 35px;
+    width: 100%;
+    margin-bottom: 5px;
+    &.bottom {
+      height: 8px;
+    }
+  }
+}
+
+.rooms {
+  color: black;
+
+  .room-row {
+    margin-bottom: 24px;
+  }
+
+  .room {
+    display: block;
+    background-color: white;
+    width: 150px;
+    height: 125px;
+    margin: auto;
+    padding: 14px;
+    padding-bottom: 0;
+    color: black;
+
+    &:hover {
+      text-decoration: none;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    .name {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+  }
+
+  .room.new {
+    background-color: #086e98;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+
+    .thumbnail {
+      background-color: #58a5c1;
+    }
+
+    .name {
+      line-height: 40px;
+    }
+  }
+
+  .thumbnail {
+    margin: auto;
+    width: 120px;
+    height: 67px;
+
+    img {
+      margin: auto;
+    }
+  }
+}
+

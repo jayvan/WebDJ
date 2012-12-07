@@ -9,6 +9,11 @@ class Room < ActiveRecord::Base
     return "room:#{id}:activity"
   end
 
+  #placeholder
+  def thumbnail
+    "http://placehold.it/120x67"
+  end
+
   def queued_songs
     $redis.lrange(queue_key, 0, -1).map{|song| JSON.parse(song)}
   end

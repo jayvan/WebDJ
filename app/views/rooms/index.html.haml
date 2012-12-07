@@ -1,0 +1,20 @@
+.rooms
+  - room_rows = @rooms.enum_for(:each_slice, 4).to_a
+  - if room_rows.last.length != 4
+    - room_rows.last.push(:new)
+  - else
+    - room_rows.push([:new])
+  - room_rows.each do |row|
+    .room-row.row-fluid
+      - row.each do |room|
+        .span3
+          - if room != :new
+            %a.room{:href => url_for(room)}
+              .thumbnail
+                %img{src: room.thumbnail}
+              .name= room.name
+              .active-users= pluralize(room.active_users, 'dancing ninja')
+          - else
+            .room.new{'data-toggle' => 'modal', 'data-target' => '#example'}
+              .thumbnail
+              .name Start a Party!
