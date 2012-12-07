@@ -25,5 +25,21 @@ class Room < ActiveRecord::Base
       :playAt => new_time,
       :createdAt => Time.now().to_i
     }).to_json)
+
+    trim_queue!
+  end
+
+  # Removes any songs that have already ended from the rooms queue
+  # This is NOT an atomic operation. Before there are multiple app processes
+  # this must be rewritten as an atomic LUA script
+  def trim_queue!
+    # Go through the song queue from start to end
+    queued_songs.each_with_index do |song, index|
+      if song['playAt'] + song['duration'] > Time.now.to_i
+        # This song is still ok to have, trim of all the ones to the left
+        $redis.ltrim(queue_key, index, -1)
+        break
+      end
+    end
   end
 end
