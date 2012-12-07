@@ -33,19 +33,6 @@ define([
     self.fetchData();
     self.searchResults = ko.observableArray();
 
-    self.enqueueSong = function(song) {
-      $.ajax({
-          url: self.baseURL + "enqueue",
-          type: 'POST',
-          data: {
-            provider: song.provider,
-            mediaId: song.mediaId
-          },
-          success: function(data) {
-            self.fetchData();
-          }
-        });
-    };
   };
 
   Room.prototype.fetchData = (function() {
@@ -87,6 +74,23 @@ define([
       self.lastUpdate = Utils.time();
     };
   })();
+
+
+  // Adds a song to the play queue by sending the provider & mediaId to the server
+  Room.prototype.enqueueSong = function(song) {
+    var self = this;
+    $.ajax({
+        url: self.baseURL + "enqueue",
+        type: 'POST',
+        data: {
+          provider: song.provider,
+          mediaId: song.mediaId
+        },
+        success: function(data) {
+          self.fetchData();
+        }
+      });
+  };
 
   // Makes sure that the song is unique and adds it to the queue
   Room.prototype.pushSongToQueue = function(song) {
