@@ -89,8 +89,8 @@ h1 {
     width: 150px;
     height: 125px;
     margin: auto;
-    padding: 14px;
-    padding-bottom: 0;
+    padding: 14px 3px 0 3px;
+    text-align: center;
     color: black;
 
     &:hover {

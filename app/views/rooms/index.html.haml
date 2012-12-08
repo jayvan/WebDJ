@@ -13,7 +13,7 @@
               .thumbnail
                 %img{src: room.thumbnail}
               .name= room.name
-              .active-users= pluralize(room.active_users, 'dancing ninja')
+              .active-users= pluralize(room.active_users, user_saying)
           - else
             .room.new{'data-toggle' => 'modal', 'data-target' => '#example'}
               .thumbnail
