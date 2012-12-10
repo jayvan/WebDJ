@@ -23,7 +23,7 @@ body {
 
 .header {
   height: 112px;
-  margin-top: 20px;
+  margin-top: 5px;
   width: 100%;
   overflow: hidden;
   position: relative;
@@ -134,3 +134,11 @@ h1 {
   }
 }
 
+#room-container {
+  color: white;
+
+  fieldset {
+    border: none;
+    margin: 10px 0;
+  }
+}
