@@ -1,4 +1,5 @@
 class Room < ActiveRecord::Base
+  default_scope order('updated_at DESC')
   include SongHelper
 
   def queue_key
@@ -36,6 +37,7 @@ class Room < ActiveRecord::Base
     }).to_json)
 
     trim_queue!
+    touch
   end
 
   def active_users

@@ -2,7 +2,7 @@ class RoomsController < ApplicationController
   after_filter :log_activity, :only => :queue
 
   def index
-    @rooms = Room.all
+    @rooms = Room.first(39)
   end
 
   def go
