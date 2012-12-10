@@ -1,11 +1,11 @@
 .rooms
-  - @rooms.insert(6, :new)
+  - @rooms.unshift(:new)
   - @rooms.enum_for(:each_slice, 4).to_a.each do |row|
     .room-row.row-fluid
       - row.each do |room|
         .span3
           - if room != :new
-            %a.room{:href => url_for(room)}
+            %a.room{:href => url_for(room), :title => room.name}
               .thumbnail
                 %img{src: room.thumbnail}
               .name= room.name
