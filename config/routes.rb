@@ -5,8 +5,10 @@ WebDJ::Application.routes.draw do
   resources :rooms do
     member do
       get 'queue'
-      get 'go'
       post 'enqueue'
+    end
+    collection do
+      get 'go'
     end
   end
 

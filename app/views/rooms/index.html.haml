@@ -11,6 +11,17 @@
               .name= room.name
               .active-users= pluralize(room.active_users, user_saying)
           - else
-            .room.new{'data-toggle' => 'modal', 'data-target' => '#example'}
+            .room.new{'data-toggle' => 'modal', 'data-target' => '#start-party'}
               .thumbnail
               .name Start a Party!
+#start-party.modal{"data-bind" => "visible: newRoomVisible", :style => "display: none"}
+  .modal-header
+    %h3 Choose a name for your party
+  .modal-body
+    %form{:action => "rooms/go"}
+      .control-group
+        .controls
+          %input{:name => "room_name", :placeholder => "Party Name", :type => "text"}
+      .control-group
+        .controls
+          %input{:type => "submit", :value => "Create"}/
