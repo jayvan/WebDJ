@@ -1,4 +1,3 @@
-#playback
 .row-fluid#room-container
   .span4.room-queue
     %h3 Coming up
@@ -27,3 +26,4 @@
           %p{'data-bind' => 'text: artist'}
           %a{'data-bind' => 'click: $root.enqueueSong.bind($root, $data)'} Queue Song
 = javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.1/require.min.js", 'data-main' => '/assets/main'
+#playback

@@ -20,6 +20,7 @@ class Room < ActiveRecord::Base
   end
 
   def enqueue_song(provider, identifier)
+
     last_song = JSON.parse($redis.lindex(queue_key, -1) || "{}")
     previous_time = last_song['playAt'] || Time.now.to_i
 
