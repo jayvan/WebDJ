@@ -9,7 +9,7 @@ define([
     load: function(song) {
       var startPosition = Math.max(Utils.time() - song.playAt, 0);
       var embedUrl = "https://www.youtube-nocookie.com/v/" + song.mediaId + "?version=3&autoplay=1&enablejsapi=1&start=" + startPosition;
-      var playerHTML = '<object allowScriptAccess="always" type="application/x-shockwave-flash" width="300" height="300" allowScriptAccess="always" data="' + embedUrl + '" style="visibility:hidden;position:absolute;top:0;left:0;"><param name="movie" value="' + embedUrl + '" /><param name="wmode" value="transparent" /></object>';
+      var playerHTML = '<object allowScriptAccess="always" type="application/x-shockwave-flash" width="320" height="320" data="' + embedUrl + '" style="visibility:hidden;position:absolute;top:0;left:0;"><param name="movie" value="' + embedUrl + '" /><param name="wmode" value="transparent" /></object>';
       var $playerHTML = $(playerHTML);
 
       song.player = $playerHTML;
