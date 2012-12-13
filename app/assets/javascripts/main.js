@@ -12,7 +12,8 @@ require([
 });
 
 require([
-  "room"
+  "room",
+  "misc/enable_csrf"
 ], function(
   Room
 ){
