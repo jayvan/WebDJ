@@ -36,7 +36,7 @@ class Room < ActiveRecord::Base
       :createdAt => Time.now().to_i
     }).to_json)
 
-    trim_queue!
+    clean!
     touch
   end
 
@@ -49,10 +49,16 @@ class Room < ActiveRecord::Base
     $redis.zadd(activity_key, Time.now.to_i, user_id)
   end
 
+  # Calls all of the cleanup methods for the room
+  def clean!
+    clean_queue!
+    clean_activity!
+  end
+
   # Removes any songs that have already ended from the rooms queue
   # This is NOT an atomic operation. Before there are multiple app processes
   # this must be rewritten as an atomic LUA script
-  def trim_queue!
+  def clean_queue!
     # Go through the song queue from start to end
     queued_songs.each_with_index do |song, index|
       if song['playAt'] + song['duration'] > Time.now.to_i
@@ -61,5 +67,10 @@ class Room < ActiveRecord::Base
         break
       end
     end
+  end
+
+  # Removes any old session IDs that have been inactive from the room for a minute
+  def clean_activity!
+    $redis.zremrangebyscore(activity_key, '-inf', Time.now.to_i - 1.minute)
   end
 end
