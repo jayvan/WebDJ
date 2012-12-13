@@ -33,6 +33,14 @@ define([
     self.fetchData();
     self.searchResults = ko.observableArray();
 
+    self.volume = ko.observable(1);
+
+    // When the volume changes, change the current songs volume
+    self.volume.subscribe(function(newValue) {
+      if (self.currentSong()) {
+        self.currentSong().setVolume(newValue);
+      }
+    });
   };
 
   Room.prototype.fetchData = (function() {

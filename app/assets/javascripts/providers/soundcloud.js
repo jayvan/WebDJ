@@ -10,8 +10,6 @@ define([
   return {
     load: function(song) {
       var startPosition = Math.max(Utils.time() - song.playAt, 0);
-      var player;
-
       song.status(STATUS.LOADED);
 
       var timeUntilStart = Math.max(song.playAt - Utils.time(), 0) * 1000;
@@ -19,22 +17,26 @@ define([
       // Inject the html
       window.setTimeout(function() {
         var stream_url = "http://api.soundcloud.com/tracks/" + song.mediaId + "/stream?client_id=" + SETTINGS.SOUNDCLOUD_KEY;
-        player = new Audio(stream_url);
+        song.player = new Audio(stream_url);
 
         // You can't set the playing position until the metadata has loaded
-        player.addEventListener('canplay', function(e) {
-          player.currentTime = startPosition;
+        song.player.addEventListener('canplay', function(e) {
+          song.player.currentTime = startPosition;
           song.status(STATUS.PLAYING);
         });
 
-        player.play();
+        song.player.play();
       }, timeUntilStart);
 
       // Clean up the html
       window.setTimeout(function() {
-        player.pause();
+        song.player.pause();
         song.status(STATUS.FINISHED);
       }, timeUntilEnd);
+    },
+
+    setVolume: function(song, volume) {
+      song.player.volume = volume;
     },
 
     search: function(query, callback) {

@@ -22,5 +22,9 @@ define([
     self.provider.load(self);
   };
 
+  Song.prototype.setVolume = function(volume) {
+    this.provider.setVolume(this, volume);
+  };
+
   return Song;
 });
