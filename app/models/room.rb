@@ -1,6 +1,8 @@
 class Room < ActiveRecord::Base
-  default_scope order('updated_at DESC')
   include SongHelper
+
+  default_scope order('updated_at DESC')
+  validates_presence_of :name
 
   def queue_key
     return "room:#{id}:queue"
