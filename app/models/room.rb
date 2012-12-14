@@ -12,7 +12,9 @@ class Room < ActiveRecord::Base
 
   #placeholder
   def thumbnail
-    "http://placehold.it/120x67"
+    json = JSON.parse($redis.lindex(queue_key, 0) || "{}")
+    thumbnail = json['thumbnail'] if json
+    return thumbnail || "http://i1.ytimg.com/vi/mqdefault.jpg"
   end
 
   def queued_songs
@@ -20,7 +22,6 @@ class Room < ActiveRecord::Base
   end
 
   def enqueue_song(provider, identifier)
-
     last_song = JSON.parse($redis.lindex(queue_key, -1) || "{}")
     previous_time = last_song['playAt'] || Time.now.to_i
 

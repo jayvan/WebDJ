@@ -87,11 +87,12 @@ h1 {
     display: block;
     background-color: white;
     width: 150px;
-    height: 125px;
+    height: 140px;
     margin: auto;
     padding: 14px 3px 0 3px;
     text-align: center;
     color: black;
+    font-size: 12px;
 
     &:hover {
       text-decoration: none;
@@ -105,6 +106,10 @@ h1 {
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap;
+    }
+
+    .active-users {
+      line-height: 10px;
     }
   }
 
@@ -126,10 +131,13 @@ h1 {
   .thumbnail {
     margin: auto;
     width: 120px;
-    height: 67px;
+    height: 90px;
+    margin-bottom: 1px;
 
     img {
       margin: auto;
+      max-height: 90px;
+      max-width: 120px;
     }
   }
 }
