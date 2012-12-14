@@ -26,5 +26,13 @@ define([
     this.provider.setVolume(this, volume);
   };
 
+  Song.prototype.durationFormatted = function() {
+    var minutes = Math.floor(this.duration / 60);
+    var seconds = Math.floor(this.duration % 60);
+    var formattedString = minutes + ':';
+    formattedString += seconds < 10 ? '0' + seconds : seconds;
+    return formattedString;
+  };
+
   return Song;
 });

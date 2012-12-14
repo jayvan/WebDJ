@@ -1,3 +1,20 @@
+@mixin ellipsis {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+@mixin vertical-gradient($top, $bottom) {
+  background: $top; /* Old browsers */
+  background: -moz-linear-gradient(top, $top 0%, $bottom 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$top), color-stop(100%,$bottom)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, $top 0%,$bottom 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, $top 0%,$bottom 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, $top 0%,$bottom 100%); /* IE10+ */
+  background: linear-gradient(to bottom, $top 0%,$bottom 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$top', endColorstr='$bottom',GradientType=0 ); /* IE6-9 */
+}
+
 * {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -19,6 +36,12 @@ body {
   font-family: "Pincoya";
   src: font-url("pincoyablack.eot"); /* IE */
   src: local("Pincoya") font-url("pincoyablack.otf") format("opentype"); /* non-IE */
+}
+
+@font-face {
+  font-family: "Impact";
+  src: font-url("impact.eot"); /* IE */
+  src: local("Pincoya") font-url("impact.ttf") format("truetype"); /* non-IE */
 }
 
 .header {
@@ -101,9 +124,7 @@ h1 {
     }
 
     .name {
-      text-overflow: ellipsis;
-      overflow: hidden;
-      white-space: nowrap;
+      @include ellipsis;
     }
 
     .active-users {
@@ -140,11 +161,137 @@ h1 {
   }
 }
 
-#room-container {
-  color: white;
+.head {
+  background-color: #595959;
+  color: #CECECE;
+  font-size: 24px;
+  font-family: Impact, Charcoal, sans-serif;
+  height: 27px;
+  padding: 3px;
+  margin-bottom: 1px;
 
-  fieldset {
-    border: none;
-    margin: 10px 0;
+  .volume {
+    float: right;
   }
+}
+
+.body {
+  background-color: white;
+}
+
+.now-playing {
+  max-width: 720px;
+  margin: auto;
+  position: relative;
+  margin-bottom: 20px;
+
+  .name {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 24px;
+    color: #222222;
+    margin-bottom: 5px;
+    @include ellipsis;
+  }
+
+  .artist, .current-position {
+    font-family: arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 18px;
+    color: #6b6b6b;
+  }
+
+  .current-position {
+    position: absolute;
+    right: 3px;
+    bottom: 3px;
+  }
+
+  .body {
+    padding: 3px;
+  }
+}
+
+.songs-container {
+  max-width: 720px;
+  margin: auto;
+
+  .song {
+    padding: 3px;
+    background-color: white;
+    position: relative;
+
+    &:nth-child(2n - 1) {
+      background-color: #E6F2ED;
+    }
+
+    .name {
+      font-family: arial, helvetica, sans-serif;
+      font-weight: bold;
+      font-size: 18px;
+      color: #4E4E4E;
+      @include ellipsis;
+    }
+
+    .artist, .duration {
+      font-family: arial, helvetica, sans-serif;
+      font-weight: bold;
+      font-size: 14px;
+      color: #999;
+    }
+
+    .duration {
+      position: absolute;
+      bottom: 3px;
+      right: 3px;
+    }
+
+    .plus {
+      cursor: pointer;
+      width: 25px;
+      float: left;
+      height: 25px;
+      font-size: 30px;
+      font-weight: bold;
+      color: black;
+      line-height: 34px;
+      margin-left: 3px;
+    }
+  }
+}
+
+.search {
+  height: 45px;
+  padding-left: 48px;
+  padding-top: 9px;
+
+  .query {
+    height: 26px;
+    border: 1px solid #7f7f7f;
+
+    &:focus {
+      outline-color: black;
+    };
+  }
+
+  .btn {
+    @include vertical-gradient(#15975e, #34bf82);
+    border: 1px solid #05804a;
+    font-size: 14px;
+    font-family: arial, helvetica, sans-serif;
+    font-weight: bold;
+    color: white;
+    height: 26px;
+    width: 73px;
+  }
+}
+
+.room-queue .body {
+  max-height: 460px;
+  overflow-y: auto;
+}
+
+.add-songs .results {
+  max-height: 415px;
+  overflow-y: auto;
 }

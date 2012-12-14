@@ -98,6 +98,7 @@ define([
           self.fetchData();
         }
       });
+    self.searchResults.removeAll();
   };
 
   // Makes sure that the song is unique and adds it to the queue
