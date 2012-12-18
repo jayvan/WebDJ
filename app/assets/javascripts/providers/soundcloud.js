@@ -40,7 +40,7 @@ define([
     },
 
     search: function(query, callback) {
-      var url = "http://api.soundcloud.com/tracks.json?client_id=" + SETTINGS.SOUNDCLOUD_KEY + "&filter=streamable&q=" + encodeURIComponent(query);
+      var url = "http://api.soundcloud.com/tracks.json?client_id=" + SETTINGS.SOUNDCLOUD_KEY + "&filter=streamable&callback=?&q=" + encodeURIComponent(query);
       $.getJSON(url, function(data) {
         callback(data.map(function(item) {
           return {
