@@ -1,8 +1,8 @@
-.row-fluid.now-playing{'data-bind' => 'with: currentSong'}
+.row-fluid.now-playing
   .head
     .volume.pull-right
     .title Now Playing
-  .body
+  .body{'data-bind' => 'with: currentSong'}
     .current-song
       .name{'data-bind' => 'text: title'}
       .artist{'data-bind' => 'text: artist'}
@@ -10,6 +10,10 @@
     .voting
       .like
       .skip
+  .body{'data-bind' => 'visible: !currentSong()'}
+    .current-song
+      .name No songs left!
+      .artist Add a song to kill the silence
 .row-fluid.songs-container
   .row-fluid.span6.room-queue
     .head Coming Up
@@ -18,6 +22,10 @@
         .name{'data-bind' => 'text: title'}
         .artist{'data-bind' => 'text:artist'}
         .duration{'data-bind' => 'text: durationFormatted()'}
+    .body{'data-bind' => 'visible: upcomingSongs().length === 0'}
+      .song
+        .name No songs coming up
+        .artist Queue one to keep the party going
   .row-fluid.span6.add-songs
     .head Add Song
     .body
