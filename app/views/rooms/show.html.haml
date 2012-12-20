@@ -29,5 +29,6 @@
           .plus{'data-bind' => 'click: $root.enqueueSong.bind($root, $data)'} +
           .name{'data-bind' => 'text: title'}
           .artist{'data-bind' => 'text:artist'}
+          .duration{'data-bind' => 'text: durationFormatted()'}
 = javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.1/require.min.js", 'data-main' => '/assets/main'
 #playback

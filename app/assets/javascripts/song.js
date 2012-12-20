@@ -1,20 +1,24 @@
 define([
-  "providers",
-  "song-status"
+  "song-status",
+  "utils"
 ], function(
-  Providers,
-  STATUS
+  STATUS,
+  utils
 ){
   var Song = function(json) {
     var self = this;
 
-    for (var key in json) {
-      self[key] = json[key];
-    }
+    self.mediaId = json.mediaId;
+    self.provider = json.provider;
+    self.title = json.title;
+    self.artist = json.artist;
+    self.duration = json.duration;
+    self.thumbnail = json.thumbnail;
+    self.playAt = json.playAt;
+    self.createdAt = json.createdAt;
 
-    self.provider = Providers[json.provider];
-    self.status = ko.observable(STATUS.NOT_LOADED);
-    return self;
+    var initialStatus = self.playAt ? STATUS.NOT_LOADED : STATUS.UNPLAYABLE;
+    self.status = ko.observable(initialStatus);
   };
 
   Song.prototype.load = function() {
@@ -27,11 +31,7 @@ define([
   };
 
   Song.prototype.durationFormatted = function() {
-    var minutes = Math.floor(this.duration / 60);
-    var seconds = Math.floor(this.duration % 60);
-    var formattedString = minutes + ':';
-    formattedString += seconds < 10 ? '0' + seconds : seconds;
-    return formattedString;
+    return utils.formatDuration(this.duration);
   };
 
   return Song;

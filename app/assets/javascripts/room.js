@@ -6,7 +6,7 @@ define([
   'providers'
 ], function(
   Song,
-  Utils,
+  utils,
   STATUS,
   SETTINGS,
   PROVIDERS
@@ -64,7 +64,8 @@ define([
         dataType: 'json',
         success: function(data) {
           data.forEach (function(song) {
-            if (song.playAt + song.duration > Utils.time()) {
+            if (song.playAt + song.duration > utils.time()) {
+              song.provider = PROVIDERS[song.provider];
               var newSong = new Song(song);
               self.pushSongToQueue(newSong);
             }
@@ -79,7 +80,7 @@ define([
         }
       });
 
-      self.lastUpdate = Utils.time() - 1;
+      self.lastUpdate = utils.time() - 1;
     };
   })();
 
@@ -87,11 +88,12 @@ define([
   // Adds a song to the play queue by sending the provider & mediaId to the server
   Room.prototype.enqueueSong = function(song) {
     var self = this;
+    console.log(song);
     $.ajax({
         url: self.baseURL + "enqueue",
         type: 'POST',
         data: {
-          provider: song.provider,
+          provider: song.provider.name,
           mediaId: song.mediaId
         },
         success: function(data) {
