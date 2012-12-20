@@ -182,7 +182,6 @@ h1 {
 }
 
 .now-playing {
-  max-width: 720px;
   margin: auto;
   position: relative;
   margin-bottom: 20px;
@@ -191,8 +190,8 @@ h1 {
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
     font-size: 24px;
+    height: 24px;
     color: #222222;
-    margin-bottom: 5px;
     @include ellipsis;
   }
 
