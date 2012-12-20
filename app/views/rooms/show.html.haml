@@ -2,7 +2,7 @@
   .head
     .volume.pull-right
     .title Now Playing
-  .body{'data-bind' => 'with: currentSong'}
+  .body{'data-bind' => 'with: currentSong, visible: currentSong'}
     .current-song
       .name{'data-bind' => 'text: title'}
       .artist{'data-bind' => 'text: artist'}

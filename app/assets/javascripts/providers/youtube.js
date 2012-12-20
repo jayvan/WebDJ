@@ -43,6 +43,11 @@ define([
   youtube.search = function(query, callback) {
     var url = "https://gdata.youtube.com/feeds/api/videos?v=2&alt=json-in-script&callback=?&q=" + encodeURIComponent(query);
     $.getJSON(url, function(data) {
+      // If there are no results
+      if (data.feed.entry === undefined) {
+        data.feed.entry = [];
+      }
+
       callback(data.feed.entry.map(function(item) {
         var songData = {
           artist: item.author[0].name.$t,
