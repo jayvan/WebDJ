@@ -16,6 +16,10 @@ define([
     self.thumbnail = json.thumbnail;
     self.playAt = json.playAt;
     self.createdAt = json.createdAt;
+    self.currentTime = ko.observable(0);
+    self.currentTimeFormatted = ko.computed(function() {
+      return utils.formatTime(self.currentTime());
+    });
 
     var initialStatus = self.playAt ? STATUS.NOT_LOADED : STATUS.UNPLAYABLE;
     self.status = ko.observable(initialStatus);
@@ -31,7 +35,7 @@ define([
   };
 
   Song.prototype.durationFormatted = function() {
-    return utils.formatDuration(this.duration);
+    return utils.formatTime(this.duration);
   };
 
   return Song;

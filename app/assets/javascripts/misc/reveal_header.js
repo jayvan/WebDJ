@@ -10,7 +10,6 @@ $(function() {
 
       while ($(line).width() > width) {
         $(box).css( 'font-size', --n );
-        console.log("trying", n);
       }
 
       $(box).text($(line).text());

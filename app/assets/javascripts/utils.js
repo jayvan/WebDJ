@@ -6,7 +6,7 @@ define({
 
   // Takes in a duration in seconds and formats it
   // e.g. 123 => 2:03
-  formatDuration: function(duration)
+  formatTime: function(duration)
   {
     var minutes = Math.floor(duration / 60);
     var seconds = Math.floor(duration % 60);

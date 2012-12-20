@@ -6,7 +6,7 @@
     .current-song
       .name{'data-bind' => 'text: title'}
       .artist{'data-bind' => 'text: artist'}
-      .current-position{'data-bind' => 'text: durationFormatted()'}
+      .current-position{'data-bind' => 'text: currentTimeFormatted() + "/" + durationFormatted()'}
     .voting
       .like
       .skip

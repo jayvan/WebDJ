@@ -30,6 +30,10 @@ define([
         song.status(STATUS.PLAYING);
       });
 
+      song.player.addEventListener('timeupdate', function(e) {
+        song.currentTime(Math.round(this.currentTime));
+      });
+
       song.player.play();
     }, timeUntilStart);
 
@@ -54,7 +58,7 @@ define([
           provider: soundcloud,
           thumbnail: item.artwork_url,
           mediaId: item.id,
-          duration: item.duration
+          duration: item.duration / 1000
         };
         return new Song(songData);
       }));

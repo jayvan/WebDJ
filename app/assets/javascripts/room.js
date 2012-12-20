@@ -88,7 +88,6 @@ define([
   // Adds a song to the play queue by sending the provider & mediaId to the server
   Room.prototype.enqueueSong = function(song) {
     var self = this;
-    console.log(song);
     $.ajax({
         url: self.baseURL + "enqueue",
         type: 'POST',

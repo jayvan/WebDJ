@@ -22,15 +22,26 @@ define([
 
     var timeUntilStart = Math.max(song.playAt - utils.time(), 0) * 1000;
     var timeUntilEnd = (song.playAt + song.duration - utils.time()) * 1000;
+    var checkInterval;
+
+    // Youtube doesnt fire an event on time change, so we have to poll the current time
+    var checkCurrentTime = function() {
+      if (song.player[0] && song.player[0].getCurrentTime) {
+        var time = Math.round(song.player[0].getCurrentTime() || 0);
+        song.currentTime(time);
+      }
+    };
 
     // Inject the html
     window.setTimeout(function() {
       $('#playback').append(song.player);
       song.status(STATUS.PLAYING);
+      checkInterval = setInterval(checkCurrentTime, 100);
     }, timeUntilStart);
 
     // Clean up the html
     window.setTimeout(function() {
+      clearInterval(checkInterval);
       song.player.remove();
       song.status(STATUS.FINISHED);
     }, timeUntilEnd);
