@@ -1,0 +1,23 @@
+List of Redis Keys
+==================
+
+Rooms
+-----
+Queue - "room:<id>:queue" (LIST)
+Song are in order of play time
+Items are JSON objects with song info such as provider, play time, duration, etc.
+
+Activity - room:<id>:activity" (SORTED SET)
+The scores are timestamps indicating the users last activity
+The keys are session IDs
+
+Likes - room:<id>:likes" (SORTED SET)
+The scores are timestamps indicating when a user 'liked' a song
+The keys are session IDs
+
+Dislikes - "room:<id>:dislikes" (SORTED SET)
+The scores are timestamps indicating when a user 'disliked' a song
+The keys are session IDs
+
+Last Skip - "room:<id>:last_skip" (INTEGER)
+The timestamp for the last time a song was skipped

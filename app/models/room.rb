@@ -12,7 +12,18 @@ class Room < ActiveRecord::Base
     return "room:#{id}:activity"
   end
 
-  #placeholder
+  def likes_key
+    return "room:#{id}:likes"
+  end
+
+  def dislikes_key
+    return "room:#{id}:dislikes"
+  end
+
+  def last_skip_key
+    return "room:#{id}:last_skip"
+  end
+
   def thumbnail
     json = JSON.parse($redis.lindex(queue_key, 0) || "{}")
     thumbnail = json['thumbnail'] if json
@@ -21,6 +32,12 @@ class Room < ActiveRecord::Base
 
   def queued_songs
     $redis.lrange(queue_key, 0, -1).map{|song| JSON.parse(song)}
+  end
+
+  def current_song
+    clean_queue!
+    json = $redis.lindex(queue_key, 0)
+    return json.nil? ? nil : JSON.parse(json)
   end
 
   def enqueue_song(provider, identifier)
@@ -48,9 +65,43 @@ class Room < ActiveRecord::Base
     $redis.zcount(activity_key, Time.now.to_i - 1.minute, '+inf')
   end
 
+  def likes
+    current = current_song
+    current.nil? ? 0 : $redis.zcount(likes_key, current['play_at'], '+inf')
+  end
+
+  def dislikes
+    current = current_song
+    current.nil? ? 0 : $redis.zcount(dislikes_key, current['play_at'], '+inf')
+  end
+
   # Marks a user as active in the room
   def log_activity(user_id)
     $redis.zadd(activity_key, Time.now.to_i, user_id)
+  end
+
+  def like_song(user_id)
+    $redis.zadd(likes_key, Time.now.to_i, user_id)
+    $redis.zrem(dislikes_key, user_id)
+  end
+
+  def dislike_song(user_id)
+    $redis.zadd(dislikes_key, Time.now.to_i, user_id)
+    $redis.zrem(likes_key, user_id)
+
+    skip_song if (dislikes.to_f / active_users >= 0.5)
+  end
+
+  def skip_song
+    play_time = Time.now.to_i
+    new_queue = queued_songs[1..-1]
+    $redis.del(queue_key)
+    new_queue.each do |song|
+      song['playAt'] = play_time
+      play_time += song['duration'].to_i
+      $redis.rpush(queue_key, song.to_json)
+    end
+    $redis.set(last_skip_key, Time.now.to_i)
   end
 
   # Calls all of the cleanup methods for the room
@@ -68,9 +119,12 @@ class Room < ActiveRecord::Base
       if song['playAt'] + song['duration'] > Time.now.to_i
         # This song is still ok to have, trim of all the ones to the left
         $redis.ltrim(queue_key, index, -1)
-        break
+        return
       end
     end
+
+    # Okay, every song has played already, nuke it
+    $redis.del(queue_key)
   end
 
   # Removes any old session IDs that have been inactive from the room for a minute

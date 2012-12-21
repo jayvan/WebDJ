@@ -6,6 +6,8 @@ WebDJ::Application.routes.draw do
     member do
       get 'queue'
       post 'enqueue'
+      post 'like_song'
+      post 'dislike_song'
     end
     collection do
       get 'go'
