@@ -48,7 +48,14 @@ define([
   };
 
   youtube.setVolume = function(song, volume) {
-    song.player[0].setVolume(volume * 100);
+    if (song.player[0].setVolume) {
+      song.player[0].setVolume(volume * 100);
+    } else {
+      // The player isn't ready. Try again later
+      window.setTimeout(function() {
+        song.setVolume(volume);
+      }, 200);
+    }
   };
 
   youtube.search = function(query, callback) {
