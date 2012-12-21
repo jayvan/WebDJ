@@ -1,5 +1,6 @@
 require([
-  "settings"
+  "settings",
+  "customBindings"
 ], function(
   SETTINGS
 ){

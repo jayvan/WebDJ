@@ -1,6 +1,15 @@
 .row-fluid.now-playing
   .head
-    .volume.pull-right
+    .volume.pull-right{'data-bind' => 'with: volumeModel'}
+      .slider
+        .icon{'data-bind' => 'click: toggleMute'}
+          .speaker
+          .wave-1{'data-bind' => 'visible: volume() > 0'}
+          .wave-2{'data-bind' => 'visible: volume() >= 0.5'}
+        .bar-container{'data-bind' => 'slide: volume', :draggable => false}
+          .bars
+            - 7.times do
+              .bar
     .title Now Playing
   .body{'data-bind' => 'with: currentSong, visible: currentSong'}
     .current-song

@@ -295,3 +295,62 @@ h1 {
   max-height: 415px;
   overflow-y: auto;
 }
+
+.volume .slider {
+  width: 80px;
+  height: 100%;
+
+  .icon {
+    height: 25px;
+    width: 25px;
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+
+    * {
+      background: image-url('volume.png');
+      display: inline-block;
+      height: 15px;
+    }
+
+    .speaker {
+      width: 10px;
+    }
+
+    .wave-1 {
+      background-position: -12px 0;
+      width: 5px;
+      position: absolute;
+      top: 4px;
+      left: 12px;
+    }
+
+    .wave-2 {
+      background-position: -18px 0;
+      width: 7px;
+      position: absolute;
+      top: 4px;
+      left: 15px;
+    }
+  }
+
+  .bar-container {
+    cursor: pointer;
+    height: 100%;
+    width: 50px;
+    display: inline-block;
+
+    .bars {
+      overflow: hidden;
+      height: 16px;
+    }
+
+    .bar {
+      width: 2px;
+      height: 30px;
+      background-color: #C8C8C8;
+      display: inline-block;
+      margin-right: 1px;
+    }
+  }
+}

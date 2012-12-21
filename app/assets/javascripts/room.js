@@ -3,13 +3,15 @@ define([
   "utils",
   'song-status',
   'settings',
-  'providers'
+  'providers',
+  'volume'
 ], function(
   Song,
   utils,
   STATUS,
   SETTINGS,
-  PROVIDERS
+  PROVIDERS,
+  VolumeModel
 ){
   var Room = function(id) {
     var self = this;
@@ -33,12 +35,20 @@ define([
     self.fetchData();
     self.searchResults = ko.observableArray();
 
-    self.volume = ko.observable(1);
+    self.volumeModel = new VolumeModel();
+    self.volume = self.volumeModel.volume;
 
     // When the volume changes, change the current songs volume
     self.volume.subscribe(function(newValue) {
       if (self.currentSong()) {
         self.currentSong().setVolume(newValue);
+      }
+    });
+
+    // When a new song is loaded, change it's volume to match the room's volume
+    self.currentSong.subscribe(function(newSong) {
+      if (newSong) {
+        newSong.setVolume(self.volume());
       }
     });
   };
