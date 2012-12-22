@@ -45,12 +45,12 @@ define([
     var timeUntilStart = Math.max(self.playAt - utils.time(), 0) * 1000;
     var timeUntilEnd = (self.playAt + self.duration - utils.time()) * 1000;
 
-    startTimeout = setTimeout(function() {
+    self.startTimeout = setTimeout(function() {
       self.provider.start(self);
       self.status(SONG_STATUS.PLAYING);
     }, timeUntilStart);
 
-    stopTimeout = setTimeout(function() {
+    self.stopTimeout = setTimeout(function() {
       self.provider.stop(self);
       self.status(SONG_STATUS.FINISHED);
     }, timeUntilEnd);
@@ -62,8 +62,8 @@ define([
     }
 
     this.status(SONG_STATUS.NOT_LOADED);
-    clearTimeout(startTimeout);
-    clearTimeout(stopTimeout);
+    clearTimeout(this.startTimeout);
+    clearTimeout(this.stopTimeout);
   };
 
   Song.prototype.setVolume = function(volume) {
