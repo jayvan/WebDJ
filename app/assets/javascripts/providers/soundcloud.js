@@ -14,34 +14,31 @@ define([
   };
 
   soundcloud.load = function(song) {
+    // Nothing special to do here.
+  };
+
+  soundcloud.start = function(song) {
     var startPosition = Math.max(utils.time() - song.playAt, 0);
-    song.status(STATUS.LOADED);
+    var stream_url = "http://api.soundcloud.com/tracks/" + song.mediaId + "/stream?client_id=" + SETTINGS.SOUNDCLOUD_KEY;
+    song.player = new Audio(stream_url);
 
-    var timeUntilStart = Math.max(song.playAt - utils.time(), 0) * 1000;
-    var timeUntilEnd = (song.playAt + song.duration - utils.time()) * 1000;
-    // Inject the html
-    window.setTimeout(function() {
-      var stream_url = "http://api.soundcloud.com/tracks/" + song.mediaId + "/stream?client_id=" + SETTINGS.SOUNDCLOUD_KEY;
-      song.player = new Audio(stream_url);
-
-      // You can't set the playing position until the metadata has loaded
-      song.player.addEventListener('canplay', function(e) {
-        song.player.currentTime = startPosition;
-        song.status(STATUS.PLAYING);
-      });
-
-      song.player.addEventListener('timeupdate', function(e) {
-        song.currentTime(Math.round(this.currentTime));
-      });
-
+    // You can't set the playing position until the metadata has loaded
+    song.player.addEventListener('loadedmetadata', function(e) {
+      song.player.currentTime = startPosition;
+      song.status(STATUS.PLAYING);
       song.player.play();
-    }, timeUntilStart);
+    });
 
-    // Clean up the html
-    window.setTimeout(function() {
+    song.player.addEventListener('timeupdate', function(e) {
+      song.currentTime(Math.round(this.currentTime));
+    });
+  };
+
+  soundcloud.stop = function(song) {
+    if (song.player) {
       song.player.pause();
-      song.status(STATUS.FINISHED);
-    }, timeUntilEnd);
+    }
+    delete song.player;
   };
 
   soundcloud.setVolume = function(song, volume) {

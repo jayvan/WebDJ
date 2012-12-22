@@ -5,6 +5,7 @@ WebDJ::Application.routes.draw do
   resources :rooms do
     member do
       get 'queue'
+      get 'summary'
       post 'enqueue'
       post 'like_song'
       post 'dislike_song'

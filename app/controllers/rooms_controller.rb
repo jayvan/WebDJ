@@ -1,5 +1,6 @@
 class RoomsController < ApplicationController
-  after_filter :log_activity, :only => :queue
+  after_filter :log_activity, :only => [:queue, :summary]
+  before_filter :get_queue, :only => [:queue, :summary]
 
   def index
     @rooms = Room.first(39)
@@ -16,13 +17,23 @@ class RoomsController < ApplicationController
   end
 
   def queue
-    @room = Room.find(params['id'])
-    since = (params['lastUpdate'] || 0).to_i
-    songs = @room.queued_songs.select{|song| song['createdAt'] > since}
-
     respond_to do |format|
-      format.xml { render :xml => songs.to_xml }
-      format.json { render :json => songs.to_json }
+      format.xml { render :xml => @queue.to_xml }
+      format.json { render :json => @queue.to_json }
+    end
+  end
+
+  def summary
+    @room = Room.find(params['id'])
+    data = {
+      :timestamp => Time.now.to_i,
+      :queue => @queue,
+      :lastSkip => @room.last_skip,
+      :activeUsers => @room.active_users
+    }
+    respond_to do |format|
+      format.xml { render :xml => data.to_xml }
+      format.json { render :json => data.to_json }
     end
   end
 
@@ -33,9 +44,27 @@ class RoomsController < ApplicationController
     render :nothing => true
   end
 
+  def dislike_song
+    @room = Room.find(params['id'])
+    @room.dislike_song(request.session_options[:id])
+    render :nothing => true
+  end
+
+  def like_song
+    @room = Room.find(params['id'])
+    @room.like_song(request.session_options[:id])
+    render :nothing => true
+  end
+
   private
 
   def log_activity
     @room.log_activity(request.session_options[:id])
+  end
+
+  def get_queue
+    @room = Room.find(params['id'])
+    since = (params['lastUpdate'] || 0).to_i
+    @queue = @room.queued_songs.select{|song| song['createdAt'] > since}
   end
 end

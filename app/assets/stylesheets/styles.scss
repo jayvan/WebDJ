@@ -47,6 +47,10 @@ body {
   src: local("Pincoya") font-url("impact.ttf") format("truetype"); /* non-IE */
 }
 
+.faded {
+  opacity: 0.5;
+}
+
 .header {
   height: 112px;
   width: 100%;
@@ -203,13 +207,35 @@ h1 {
   }
 
   .current-position {
-    position: absolute;
-    right: 3px;
-    bottom: 3px;
+    float: right;
   }
 
   .body {
     padding: 3px;
+  }
+
+  .voting {
+    float: right;
+    border-left: 1px solid #999;
+    padding-left: 8px;
+    margin-left: 8px;
+    margin-right: 6px;
+
+    .like {
+      background: image-url('sprite.png') -26px 0;
+      width: 34px;
+      height: 37px;
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    .skip {
+      background: image-url('sprite.png') -62px 0;
+      width: 22px;
+      height: 37px;
+      display: inline-block;
+      cursor: pointer;
+    }
   }
 }
 
@@ -308,7 +334,7 @@ h1 {
     position: relative;
 
     * {
-      background: image-url('volume.png');
+      background: image-url('sprite.png');
       display: inline-block;
       height: 15px;
     }

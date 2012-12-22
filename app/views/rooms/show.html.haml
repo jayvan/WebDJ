@@ -13,12 +13,12 @@
     .title Now Playing
   .body{'data-bind' => 'with: currentSong, visible: currentSong'}
     .current-song
+      .voting
+        .like{'data-bind' => 'click: $root.likeCurrentSong.bind($root), css: { faded: !liked()}'}
+        .skip{'data-bind' => 'click: $root.dislikeCurrentSong.bind($root), css: { faded: !disliked()}'}
       .name{'data-bind' => 'text: title'}
-      .artist{'data-bind' => 'text: artist'}
       .current-position{'data-bind' => 'text: currentTimeFormatted() + "/" + durationFormatted()'}
-    .voting
-      .like
-      .skip
+      .artist{'data-bind' => 'text: artist'}
   .body{'data-bind' => 'visible: !currentSong()'}
     .current-song
       .name No songs left!

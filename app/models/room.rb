@@ -98,10 +98,15 @@ class Room < ActiveRecord::Base
     $redis.del(queue_key)
     new_queue.each do |song|
       song['playAt'] = play_time
+      song['createdAt'] = Time.now.to_i
       play_time += song['duration'].to_i
       $redis.rpush(queue_key, song.to_json)
     end
     $redis.set(last_skip_key, Time.now.to_i)
+  end
+
+  def last_skip
+    ($redis.get(last_skip_key) || 0).to_i
   end
 
   # Calls all of the cleanup methods for the room

@@ -2,29 +2,32 @@ define([
   "song",
   "utils",
   'song-status',
+  'like-status',
   'settings',
   'providers',
   'volume'
 ], function(
   Song,
   utils,
-  STATUS,
+  SONG_STATUS,
+  LIKE_STATUS,
   SETTINGS,
   PROVIDERS,
   VolumeModel
 ){
   var Room = function(id) {
+    test = this;
     var self = this;
     self.id = id;
     self.songs = ko.observableArray();
     self.upcomingSongs = ko.computed(function() {
       return self.songs().filter(function(song) {
-        return song().status() < STATUS.PLAYING;
+        return song().status() < SONG_STATUS.PLAYING;
       });
     });
     self.currentSong = ko.computed(function() {
       for (var i = 0; i < self.songs().length; i++) {
-        if (self.songs()[i]().status() === STATUS.PLAYING) {
+        if (self.songs()[i]().status() === SONG_STATUS.PLAYING) {
           return self.songs()[i]();
         }
       }
@@ -34,7 +37,8 @@ define([
     self.fetchTimeout = undefined;
     self.fetchData();
     self.searchResults = ko.observableArray();
-
+    self.activeUsers = ko.observable(0);
+    self.lastSkip = ko.observable(utils.time());
     self.volumeModel = new VolumeModel();
     self.volume = self.volumeModel.volume;
 
@@ -70,16 +74,25 @@ define([
       }
 
       $.ajax({
-        url: self.baseURL + "queue.json?lastUpdate=" + self.lastUpdate,
+        url: self.baseURL + "summary.json?lastUpdate=" + self.lastUpdate,
         dataType: 'json',
         success: function(data) {
-          data.forEach (function(song) {
+          if (data.lastSkip > self.lastSkip()) {
+            self.lastSkip(data.lastSkip);
+            self.songs().forEach(function(song) {
+              song().unload();
+            });
+            self.songs.removeAll();
+          }
+          // Add any songs we don't already have to the queue
+          data.queue.forEach (function(song) {
             if (song.playAt + song.duration > utils.time()) {
               song.provider = PROVIDERS[song.provider];
               var newSong = new Song(song);
               self.pushSongToQueue(newSong);
             }
           });
+          self.activeUsers(data.activeUsers);
         },
         complete: function() {
           self.fetchTimeout = window.setTimeout(function() {
@@ -122,6 +135,26 @@ define([
 
     this.songs.push(ko.observable(song));
     song.load();
+  };
+
+  Room.prototype.likeCurrentSong = function() {
+    if (this.currentSong()) {
+      this.currentSong().likeStatus(LIKE_STATUS.LIKED);
+      $.ajax({
+        url: this.baseURL + "like_song",
+        type: 'POST'
+      });
+    }
+  };
+
+  Room.prototype.dislikeCurrentSong = function() {
+    if (this.currentSong()) {
+      this.currentSong().likeStatus(LIKE_STATUS.DISLIKED);
+      $.ajax({
+        url: this.baseURL + "dislike_song",
+        type: 'POST'
+      });
+    }
   };
 
   Room.prototype.search = function(formElement) {
