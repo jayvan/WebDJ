@@ -16,7 +16,6 @@ define([
   VolumeModel
 ){
   var Room = function(id) {
-    test = this;
     var self = this;
     self.id = id;
     self.songs = ko.observableArray();
