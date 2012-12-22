@@ -16,15 +16,14 @@ define([
     var embedUrl = "https://www.youtube-nocookie.com/v/" + song.mediaId + "?version=3&autoplay=1&enablejsapi=1&start=" + startPosition;
     var playerHTML = '<object allowScriptAccess="always" type="application/x-shockwave-flash" width="320" height="320" data="' + embedUrl + '" style="visibility:hidden;position:absolute;top:0;left:0;"><param name="movie" value="' + embedUrl + '" /><param name="wmode" value="transparent" /></object>';
     var $playerHTML = $(playerHTML);
-    var checkInterval;
+    song.checkInterval = null;
 
     song.player = $playerHTML;
-
   };
 
   youtube.start = function(song) {
     $('#playback').append(song.player);
-    checkInterval = setInterval(function() {
+    song.checkInterval = setInterval(function() {
       if (song.player[0] && song.player[0].getCurrentTime) {
         var time = Math.round(song.player[0].getCurrentTime() || 0);
         song.currentTime(time);
@@ -33,7 +32,7 @@ define([
   };
 
   youtube.stop = function(song) {
-    clearInterval(checkInterval);
+    clearInterval(song.checkInterval);
     song.player.remove();
   };
 
