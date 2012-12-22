@@ -14,6 +14,7 @@ define([
     self.provider = json.provider;
     self.title = json.title;
     self.artist = json.artist;
+    self.artistURL = json.artistURL;
     self.duration = json.duration;
     self.thumbnail = json.thumbnail;
     self.playAt = json.playAt;

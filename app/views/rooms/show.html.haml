@@ -18,7 +18,8 @@
         .skip{'data-bind' => 'click: $root.dislikeCurrentSong.bind($root), css: { faded: !disliked()}'}
       .name{'data-bind' => 'text: title'}
       .current-position{'data-bind' => 'text: currentTimeFormatted() + "/" + durationFormatted()'}
-      .artist{'data-bind' => 'text: artist'}
+      %a.artist{:target => '_blank', 'data-bind' => 'text: artist, attr: {href:  artistURL}'}
+      %img.provider-logo{'data-bind' => 'attr: {src: "/assets/" + provider.name + "-logo.png"}'}
   .body{'data-bind' => 'visible: !currentSong()'}
     .current-song
       .name No songs left!
