@@ -1,6 +1,5 @@
 require([
-  "settings",
-  "customBindings"
+  "settings"
 ], function(
   SETTINGS
 ){
@@ -14,11 +13,17 @@ require([
 
 require([
   "room",
-  "misc/enable_csrf"
+  'knockout',
+  "misc/enable_csrf",
+  "misc/reveal_header",
+  "customBindings"
 ], function(
-  Room
+  Room,
+  ko
 ){
   var roomId = window.location.pathname.split("/")[2];
-  var room = new Room(roomId);
-  ko.applyBindings(room);
+  if (roomId) {
+    var room = new Room(roomId);
+    ko.applyBindings(room);
+  }
 });

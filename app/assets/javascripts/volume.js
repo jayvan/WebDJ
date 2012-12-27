@@ -1,18 +1,22 @@
-define(function() {
+define([
+  'knockout'
+], function(
+  ko
+) {
   var VolumeModel = function() {
     var self = this;
-    var volume = ko.observable(1);
+    var _volume = ko.observable(1);
     self.volume = ko.computed({
-      read: volume,
+      read: _volume,
       write: function(newVolume) {
         if (newVolume === 0) {
-          self.preMuteVolume = volume();
+          self.preMuteVolume = _volume();
         }
-        volume(newVolume);
+        _volume(newVolume);
       }
     });
     self.muted = ko.computed(function() {
-      return volume() === 0;
+      return self.volume() === 0;
     });
 
     self.preMuteVolume = 1;
@@ -33,6 +37,6 @@ define(function() {
 
     this.volume(this.preMuteVolume);
   };
-
+  
   return VolumeModel;
 });
