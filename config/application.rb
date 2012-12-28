@@ -15,7 +15,7 @@ module WebDJ
     # Do not load the entire environment when deploying to Heroku
     config.assets.initialize_on_precompile = false
     config.assets.enabled = true
-    config.assets.version = 0.01
+    config.assets.version = 0.021
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers

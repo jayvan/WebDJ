@@ -10,7 +10,6 @@ gem 'devise'
 gem 'haml-rails', '0.3.4'
 gem 'redis'
 gem 'thin'
-gem 'requirejs-rails'
 
 # Gems used only for assets and not required
 # in production environments by default.

@@ -1,4 +1,4 @@
-require(['knockout', 'jquery'], function(ko, $) {
+define(['knockout', 'jquery'], function(ko, $) {
   var handleEvent = function(e, valueAccessor) {
     var $this = $(this);
     var volume = (e.pageX - $this.offset().left) / $this.width();
