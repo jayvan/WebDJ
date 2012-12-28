@@ -1,6 +1,14 @@
+requirejs.config({
+  paths: {
+    jquery: "http://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.2/jquery.min",
+    knockout: "http://cdnjs.cloudflare.com/ajax/libs/knockout/2.2.0/knockout-min",
+    bootstrap: "http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.2.1/bootstrap.min"
+  },
+  baseUrl: '/assets/'
+});
+
 require([
-  "settings",
-  "customBindings"
+  "settings"
 ], function(
   SETTINGS
 ){
@@ -13,12 +21,23 @@ require([
 });
 
 require([
+  "misc/enable_csrf",
+  "misc/reveal_header"
+]);
+
+// Create a room
+require([
   "room",
-  "misc/enable_csrf"
+  'knockout',
+  'customBindings'
 ], function(
-  Room
+  Room,
+  ko
 ){
+  // Works for now, if there are more pages in the future a proper router should be used.
   var roomId = window.location.pathname.split("/")[2];
-  var room = new Room(roomId);
-  ko.applyBindings(room);
+  if (roomId) {
+    var room = new Room(roomId);
+    ko.applyBindings(room);
+  }
 });

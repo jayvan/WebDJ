@@ -1,19 +1,23 @@
 define([
+  'volume',
+  'knockout',
   "song",
   "utils",
   'song-status',
   'like-status',
   'settings',
   'providers',
-  'volume'
+  'jquery'
 ], function(
+  VolumeModel,
+  ko,
   Song,
   utils,
   SONG_STATUS,
   LIKE_STATUS,
   SETTINGS,
   PROVIDERS,
-  VolumeModel
+  $
 ){
   var Room = function(id) {
     var self = this;

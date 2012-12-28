@@ -1,11 +1,13 @@
 define([
   "song-status",
   "like-status",
-  "utils"
+  "utils",
+  'knockout'
 ], function(
   SONG_STATUS,
   LIKE_STATUS,
-  utils
+  utils,
+  ko
 ){
   var Song = function(json) {
     var self = this;
