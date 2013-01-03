@@ -1,6 +1,7 @@
 class RoomsController < ApplicationController
   after_filter :log_activity, :only => [:queue, :summary]
   before_filter :get_queue, :only => [:queue, :summary]
+  before_filter :set_api_headers, :only => [:queue, :summary]
 
   def index
     @rooms = Room.first(39)
@@ -19,7 +20,7 @@ class RoomsController < ApplicationController
   def queue
     respond_to do |format|
       format.xml { render :xml => @queue.to_xml }
-      format.json { render :json => @queue.to_json }
+      format.json { render :json => @queue.to_json, :callback => params[:callback] }
     end
   end
 
@@ -33,7 +34,7 @@ class RoomsController < ApplicationController
     }
     respond_to do |format|
       format.xml { render :xml => data.to_xml }
-      format.json { render :json => data.to_json }
+      format.json { render :json => data.to_json, :callback => params[:callback] }
     end
   end
 
