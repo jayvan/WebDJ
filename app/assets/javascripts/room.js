@@ -87,6 +87,7 @@ define([
         url: self.baseURL + "summary.json?lastUpdate=" + self.lastUpdate,
         dataType: 'json',
         success: function(data) {
+          utils.calibrateTime(data.timestamp);
           if (data.lastSkip > self.lastSkip()) {
             self.lastSkip(data.lastSkip);
             self.songs().forEach(function(song) {
