@@ -18,7 +18,7 @@
         .stripe.middle
           %p{'data-bind' => 'text: activeUsers() + " " + (activeUsers() === 1 ? "person" : "people")'}
         .stripe.bottom
-          %p{'data-bind' => 'text: songs().length + " " + (songs().length === 1 ? "song" : "songs")'}
+          %p{'data-bind' => 'text: songCount() + " " + (songCount() === 1 ? "song" : "songs")'}
     .container-fluid
       - if notice
         %p.alert.alert-info= notice

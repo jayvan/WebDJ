@@ -35,6 +35,13 @@ define([
         }
       }
     });
+    self.songCount = ko.computed(function() {
+      var count = self.upcomingSongs().length;
+      if (self.currentSong()) {
+        count += 1;
+      }
+      return count;
+    });
     self.baseURL = "/rooms/" + self.id + "/";
     self.lastUpdate = 0;
     self.fetchTimeout = undefined;
