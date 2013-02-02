@@ -1,11 +1,13 @@
 define([
   "song-status",
   "like-status",
-  "utils"
+  "utils",
+  'knockout'
 ], function(
   SONG_STATUS,
   LIKE_STATUS,
-  utils
+  utils,
+  ko
 ){
   var Song = function(json) {
     var self = this;
@@ -14,6 +16,7 @@ define([
     self.provider = json.provider;
     self.title = json.title;
     self.artist = json.artist;
+    self.artistURL = json.artistURL;
     self.duration = json.duration;
     self.thumbnail = json.thumbnail;
     self.playAt = json.playAt;
@@ -45,12 +48,12 @@ define([
     var timeUntilStart = Math.max(self.playAt - utils.time(), 0) * 1000;
     var timeUntilEnd = (self.playAt + self.duration - utils.time()) * 1000;
 
-    startTimeout = setTimeout(function() {
+    self.startTimeout = setTimeout(function() {
       self.provider.start(self);
       self.status(SONG_STATUS.PLAYING);
     }, timeUntilStart);
 
-    stopTimeout = setTimeout(function() {
+    self.stopTimeout = setTimeout(function() {
       self.provider.stop(self);
       self.status(SONG_STATUS.FINISHED);
     }, timeUntilEnd);
@@ -62,8 +65,8 @@ define([
     }
 
     this.status(SONG_STATUS.NOT_LOADED);
-    clearTimeout(startTimeout);
-    clearTimeout(stopTimeout);
+    clearTimeout(this.startTimeout);
+    clearTimeout(this.stopTimeout);
   };
 
   Song.prototype.setVolume = function(volume) {

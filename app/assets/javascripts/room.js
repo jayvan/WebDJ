@@ -1,22 +1,25 @@
 define([
+  'volume',
+  'knockout',
   "song",
   "utils",
   'song-status',
   'like-status',
   'settings',
   'providers',
-  'volume'
+  'jquery'
 ], function(
+  VolumeModel,
+  ko,
   Song,
   utils,
   SONG_STATUS,
   LIKE_STATUS,
   SETTINGS,
   PROVIDERS,
-  VolumeModel
+  $
 ){
   var Room = function(id) {
-    test = this;
     var self = this;
     self.id = id;
     self.songs = ko.observableArray();
@@ -31,6 +34,13 @@ define([
           return self.songs()[i]();
         }
       }
+    });
+    self.songCount = ko.computed(function() {
+      var count = self.upcomingSongs().length;
+      if (self.currentSong()) {
+        count += 1;
+      }
+      return count;
     });
     self.baseURL = "/rooms/" + self.id + "/";
     self.lastUpdate = 0;
@@ -77,6 +87,7 @@ define([
         url: self.baseURL + "summary.json?lastUpdate=" + self.lastUpdate,
         dataType: 'json',
         success: function(data) {
+          utils.calibrateTime(data.timestamp);
           if (data.lastSkip > self.lastSkip()) {
             self.lastSkip(data.lastSkip);
             self.songs().forEach(function(song) {

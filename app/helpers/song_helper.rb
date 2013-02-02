@@ -20,6 +20,7 @@ module SongHelper
     return {
       :title => json['entry']['title']['$t'],
       :artist => json['entry']['author'][0]['name']['$t'],
+      :artistURL => "http://youtube.com/#{json['entry']['author'][0]['name']['$t']}",
       :duration => json['entry']['media$group']['media$content'][0]['duration'],
       :thumbnail => json['entry']['media$group']['media$thumbnail'][0]['url']
     }
@@ -31,6 +32,7 @@ module SongHelper
     return {
       :title => json['title'],
       :artist => json['user']['username'],
+      :artistURL => json['user']['permalink_url'],
       :duration => (json['duration'] / 1000.0).ceil,
       :thumbnail => json['artwork_url'],
     }

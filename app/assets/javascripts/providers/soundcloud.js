@@ -14,18 +14,16 @@ define([
   };
 
   soundcloud.load = function(song) {
-    // Nothing special to do here.
+    var stream_url = "http://api.soundcloud.com/tracks/" + song.mediaId + "/stream?client_id=" + SETTINGS.SOUNDCLOUD_KEY;
+    song.player = new Audio(stream_url);
   };
 
   soundcloud.start = function(song) {
     var startPosition = Math.max(utils.time() - song.playAt, 0);
-    var stream_url = "http://api.soundcloud.com/tracks/" + song.mediaId + "/stream?client_id=" + SETTINGS.SOUNDCLOUD_KEY;
-    song.player = new Audio(stream_url);
 
     // You can't set the playing position until the metadata has loaded
     song.player.addEventListener('loadedmetadata', function(e) {
       song.player.currentTime = startPosition;
-      song.status(STATUS.PLAYING);
       song.player.play();
     });
 
@@ -43,7 +41,7 @@ define([
 
   soundcloud.setVolume = function(song, volume) {
     song.player.volume = volume;
-  },
+  };
 
   soundcloud.search = function(query, callback) {
     var url = "http://api.soundcloud.com/tracks.json?client_id=" + SETTINGS.SOUNDCLOUD_KEY + "&filter=streamable&callback=?&q=" + encodeURIComponent(query);
