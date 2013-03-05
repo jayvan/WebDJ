@@ -46,14 +46,18 @@ class RoomsController < ApplicationController
   end
 
   def dislike_song
-    @room = Room.find(params['id'])
-    @room.dislike_song(request.session_options[:id])
+    room = Room.find(params['id'])
+    if (room.current_song['mediaId'] == params['mediaId'])
+      room.dislike_song(request.session_options[:id])
+    end
     render :nothing => true
   end
 
   def like_song
-    @room = Room.find(params['id'])
-    @room.like_song(request.session_options[:id])
+    room = Room.find(params['id'])
+    if (room.current_song['mediaId'] == params['mediaId'])
+      room.like_song(request.session_options[:id])
+    end
     render :nothing => true
   end
 

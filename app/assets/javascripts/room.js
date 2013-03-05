@@ -149,20 +149,26 @@ define([
   };
 
   Room.prototype.likeCurrentSong = function() {
-    if (this.currentSong()) {
+    if (this.currentSong() && this.currentSong().likeStatus() != LIKE_STATUS.LIKED) {
       this.currentSong().likeStatus(LIKE_STATUS.LIKED);
       $.ajax({
         url: this.baseURL + "like_song",
+        data: {
+          mediaId: this.currentSong().mediaId
+        },
         type: 'POST'
       });
     }
   };
 
   Room.prototype.dislikeCurrentSong = function() {
-    if (this.currentSong()) {
+    if (this.currentSong() && this.currentSong().likeStatus() != LIKE_STATUS.DISLIKED) {
       this.currentSong().likeStatus(LIKE_STATUS.DISLIKED);
       $.ajax({
         url: this.baseURL + "dislike_song",
+        data: {
+          mediaId: this.currentSong().mediaId
+        },
         type: 'POST'
       });
     }
