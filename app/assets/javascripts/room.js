@@ -55,14 +55,14 @@ define([
     // When the volume changes, change the current songs volume
     self.volume.subscribe(function(newValue) {
       if (self.currentSong()) {
-        self.currentSong().setVolume(newValue);
+        self.currentSong().volume(newValue);
       }
     });
 
     // When a new song is loaded, change it's volume to match the room's volume
     self.currentSong.subscribe(function(newSong) {
       if (newSong) {
-        newSong.setVolume(self.volume());
+        newSong.fadeTo(self.volume());
       }
     });
   };
@@ -95,13 +95,11 @@ define([
             });
             self.songs.removeAll();
           }
-          // Add any songs we don't already have to the queue
+          // Add songs we don't already have to the queue
           data.queue.forEach (function(song) {
-            if (song.playAt + song.duration > utils.time()) {
-              song.provider = PROVIDERS[song.provider];
-              var newSong = new Song(song);
-              self.pushSongToQueue(newSong);
-            }
+            song.provider = PROVIDERS[song.provider];
+            var newSong = new Song(song);
+            self.pushSongToQueue(newSong);
           });
           self.activeUsers(data.activeUsers);
         },
@@ -138,6 +136,8 @@ define([
 
   // Makes sure that the song is unique and adds it to the queue
   Room.prototype.pushSongToQueue = function(song) {
+    // If the song has already ended, don't bother adding it
+    if (song.playAt + song.duration <= utils.time()) { return; }
     for (var i = 0; i < this.songs().length; i++) {
       if (song.playAt === this.songs()[i]().playAt) {
         return;

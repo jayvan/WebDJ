@@ -33,16 +33,21 @@ define([
 
   youtube.stop = function(song) {
     clearInterval(song.checkInterval);
+    clearTimeout(song.volumeTimeout);
     song.player.remove();
   };
 
   youtube.setVolume = function(song, volume) {
+    // Cancel an earlier volume set attempt if one exists
+    clearTimeout(song.volumeTimeout);
+    delete song.volumeTimeout;
+
     if (song.player[0].setVolume) {
       song.player[0].setVolume(volume * 100);
     } else {
       // The player isn't ready. Try again later
-      window.setTimeout(function() {
-        song.setVolume(volume);
+      song.volumeTimeout = window.setTimeout(function() {
+        youtube.setVolume(song, volume);
       }, 200);
     }
   };

@@ -24,6 +24,7 @@ define([
     self.currentTime = ko.observable(0);
     self.startTimeout = null;
     self.stopTimeout = null;
+    self.volume = ko.observable(0);
     self.currentTimeFormatted = ko.computed(function() {
       return utils.formatTime(self.currentTime());
     });
@@ -37,9 +38,16 @@ define([
       return self.likeStatus() === LIKE_STATUS.LIKED;
     });
 
+    self.volume.subscribe(function(volume) {
+      self.provider.setVolume(self, volume);
+    });
+
     var initialStatus = self.playAt ? SONG_STATUS.NOT_LOADED : SONG_STATUS.UNPLAYABLE;
     self.status = ko.observable(initialStatus);
   };
+
+  Song.FADE_TIME = 3000;
+  Song.FADE_STEPS = 30;
 
   Song.prototype.load = function() {
     var self = this;
@@ -53,24 +61,49 @@ define([
       self.status(SONG_STATUS.PLAYING);
     }, timeUntilStart);
 
-    self.stopTimeout = setTimeout(function() {
-      self.provider.stop(self);
-      self.status(SONG_STATUS.FINISHED);
-    }, timeUntilEnd);
+    self.stopTimeout = setTimeout(function() { self.unload(); } , timeUntilEnd);
   };
 
   Song.prototype.unload = function() {
-    if (this.status() === SONG_STATUS.LOADED || this.status() === SONG_STATUS.PLAYING) {
-      this.provider.stop(this);
+    var self = this;
+
+    if (self.status() === SONG_STATUS.LOADED || self.status() === SONG_STATUS.PLAYING) {
+      self.fadeOut();
+      window.setTimeout(function() {
+        self.provider.stop(self);
+        self.status(SONG_STATUS.FINISHED);
+      }, Song.FADE_TIME + 3000); // Delete the actual song 3 seconds after the fadeout completes
     }
 
-    this.status(SONG_STATUS.NOT_LOADED);
-    clearTimeout(this.startTimeout);
-    clearTimeout(this.stopTimeout);
+    clearTimeout(self.startTimeout);
+    clearTimeout(self.stopTimeout);
   };
 
-  Song.prototype.setVolume = function(volume) {
-    this.provider.setVolume(this, volume);
+  Song.prototype._fadeTo = function(step, target) {
+    var self = this;
+    // The video may have been unloaded while fading
+    if (self.status() !== SONG_STATUS.PLAYING) {
+      return;
+    }
+
+    if (Math.abs(self.volume() - target) <= Math.abs(step)) {
+      self.volume(target);
+      return;
+    }
+
+    this.volume(this.volume() + step);
+
+    window.setTimeout(function() {
+      self._fadeTo(step, target);
+    }, Song.FADE_TIME / Song.FADE_STEPS);
+  };
+
+  Song.prototype.fadeOut = function() {
+    this._fadeTo(-this.volume() / Song.FADE_STEPS, 0);
+  };
+
+  Song.prototype.fadeTo = function(target) {
+    this._fadeTo((target - this.volume()) / Song.FADE_STEPS, target);
   };
 
   Song.prototype.durationFormatted = function() {
