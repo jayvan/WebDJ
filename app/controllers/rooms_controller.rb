@@ -1,5 +1,5 @@
 class RoomsController < ApplicationController
-  after_filter :log_activity, :only => [:queue, :summary]
+  before_filter :log_activity, :only => [:queue, :summary]
   before_filter :get_queue, :only => [:queue, :summary]
   before_filter :set_api_headers, :only => [:queue, :summary]
 
